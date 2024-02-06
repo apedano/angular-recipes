@@ -14,12 +14,13 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 })
 export class DetailsComponent {
 
-  housingLocationId = -1;
+  housingLocationId: number = -1;
   housingLocation: HousingLocation | undefined;
 
   constructor(private route: ActivatedRoute, private housingService: HousingService) {
     this.housingLocationId = Number(this.route.snapshot.params['id']);
-    this.housingLocation = this.housingService.getHousingLocationById(this.housingLocationId);
+    this.housingService.getHousingLocationById(this.housingLocationId)
+      .then((loadedHousingLocation) => {this.housingLocation = loadedHousingLocation});
   }
 
   applyForm = new FormGroup({
