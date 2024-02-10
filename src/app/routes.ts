@@ -1,11 +1,12 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {DetailsComponent} from './details/details.component';
+import { UnitFormComponent } from './unit-form/unit-form.component';
 
 const routeConfig: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: UnitFormComponent,
         title: 'Home page',
     },
     {

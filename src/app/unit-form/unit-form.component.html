@@ -1,57 +1,18 @@
-<div *ngIf="loading">Loading...</div>
-<form (ngSubmit)="onSubmit()" [formGroup]="entityForm" *ngIf="!loading">
-    <div class="form-grid">
-        <div class="card">
-            <h4>New Team</h4>
-            <div class="p-fluid">
-                <div class="p-field p-grid margin-top">
-                    <span class="p-float-label">
-                        <input pInputText formControlName="name">
-                        <label for="name">Name</label>
-                    </span>
-                    <small id="name-invalid" class="p-error block"
-                        *ngIf="name?.touched && name?.errors?.['minlength']">Name
-                        should be at least 3 chars long</small>
-                    <small id="name-invalid" class="p-error block"
-                        *ngIf="name?.touched && name?.errors?.['required']">Name
-                        is mandatory</small>
-                </div>
-                <div class="p-field p-grid margin-top">
-                    <span class="p-float-label">
-                        <p-calendar dateFormat="dd-mm-yy" name="foundation" inputId="dateformat"
-                            formControlName="foundation">
-                        </p-calendar>
-                        <label for="float-input">Foundation Date</label>
-                    </span>
-                    <small id="foundation-invalid" class="p-error block"
-                        *ngIf="foundation?.touched && foundation?.errors?.['required']">Foundation date
-                        is
-                        mandatory</small>
-                </div>
-                <div class="p-field p-grid margin-top">
-                    <!-- <label for="float-input">Logo</label> -->
-
-                    <app-asset-image-selector formControlName="logo" [urlPartsArray]="[['assets/img/teams/', '.jpg']]">
-                    </app-asset-image-selector>
-
-                    <small for="float-input" class="p-error block"
-                        *ngIf="logo?.touched && logo?.errors?.['required']">Select logo is
-                        required</small>
-                </div>
-                <!-- https://angular-material-extensions.github.io/select-country/ -->
-                <div class="p-field p-grid margin-top">
-                    <div class="grid">
-                        <div class="col">
-                            <app-country-selector id="country" name="country" formControlName="country">
-                            </app-country-selector>
-                        </div>
-                    </div>
-                    <small class="p-error block" *ngIf="country?.touched && country?.errors?.['required']">
-                        Country is required
-                    </small>
-                </div>
+<ng-container *ngIf="baseUnits$ | async as baseUnits">
+    <form (ngSubmit)="onSubmit()" #unitForm="ngForm">
+        <div class="form-group">
+            <label for="base">Base Unit</label>
+            <select class="form-control" id="baseUnit"
+                    required
+                    [(ngModel)]="unit.baseUnit" name="baseUnit"
+                    #baseUnit="ngModel">
+              <option *ngFor="let bUnit of baseUnits" [value]="bUnit">{{bUnit}}</option>
+            </select>
+            <div [hidden]="baseUnit.valid || baseUnit.pristine" class="alert alert-danger">
+              Power is required
             </div>
         </div>
-        <button pButton type="submit" [disabled]="!entityForm.valid" label="Save"></button>
-    </div>
+        <button type="submit" class="btn btn-success" [disabled]="!unitForm.form.valid">Submit</button>
+      <!-- <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button> -->
 </form>
+</ng-container>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Recipe } from './model/recipe.model';
-import { GenericService } from './generic.service';
+import { Recipe } from './model/recipe.model';import { GenericService } from './generic.service';
 import { HttpClient } from '@angular/common/http';
 import { Unit } from './model/unit.mode';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +13,18 @@ export class UnitService extends GenericService<Unit> {
     super(httpClient);
   }
 
-  protected override getApiPath(): string {
-    throw new Error('Method not implemented.');
+  getAllBase(): Observable<Unit[]> {
+    return this.getByFilter((u: Unit) => u.baseUnit == null)
+    // .pipe(map((unitArray: Team[]) => teamArray[0])
   }
-  protected override mapToEntity(id: string, reponseData: any): Recipe {
-    throw new Error('Method not implemented.');
+
+  protected override getApiPath(): string {
+    return 'units';
+  }
+  protected override mapToEntity(id: string, reponseData: any): Unit {
+    return new Unit(
+      id = id
+    );
   }
 
 }
