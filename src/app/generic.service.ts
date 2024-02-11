@@ -8,7 +8,7 @@ import { IdEntity } from "./model/id-entity.model";
 
 export abstract class GenericService<T extends IdEntity> {
 
-    readonly FIREBASE_BASE_URL: string = 'https://console.firebase.google.com/project/recipes-ffddb/database/recipes-ffddb-default-rtdb/data';
+    readonly FIREBASE_BASE_URL: string = 'https://recipes-ffddb-default-rtdb.europe-west1.firebasedatabase.app/';
 
     public errorSubject: Subject<string> = new Subject();
     private allValuesSubject: BehaviorSubject<T[] | null> = new BehaviorSubject<T[] | null>(null);

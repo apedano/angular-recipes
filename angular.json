@@ -98,8 +98,28 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "angular-recipes:build:production",
+              "serveTarget": "angular-recipes:serve:production"
+            },
+            "development": {
+              "buildTarget": "angular-recipes:build:development",
+              "serveTarget": "angular-recipes:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

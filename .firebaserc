@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "recipes-ffddb": {
+      "hosting": {
+        "angular-recipes": [
+          "recipes-ffddb"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "recipes-ffddb"
+  }
+}

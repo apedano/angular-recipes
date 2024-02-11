@@ -9,7 +9,26 @@ import routeConfig from './app/routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
+import { importProvidersFrom } from '@angular/core';
+import { environment } from './environments/environment.development';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 bootstrapApplication(AppComponent, {
-  providers: [provideProtractorTestingSupport(), provideRouter(routeConfig), provideHttpClient(), provideAnimationsAsync(), provideAnimations()],
+  providers: [
+    provideProtractorTestingSupport(), 
+    provideRouter(routeConfig), 
+    provideHttpClient(),
+    importProvidersFrom([
+      provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+      provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()),
+      provideStorage(() => getStorage())
+    ]),
+    provideAnimationsAsync(), 
+    provideAnimations()
+    //, importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"recipes-ffddb","appId":"1:854402306482:web:41188fecf8f9aa32fdd4ab","databaseURL":"https://recipes-ffddb-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"recipes-ffddb.appspot.com","apiKey":"AIzaSyAL7VaINHUOoocwZXGrvw2Ne12QCtX1gR0","authDomain":"recipes-ffddb.firebaseapp.com","messagingSenderId":"854402306482"}))), importProvidersFrom(provideAuth(() => getAuth())), importProvidersFrom(provideFirestore(() => getFirestore())), importProvidersFrom(provideStorage(() => getStorage()))
+  ]
 }).catch((err) => console.error(err));
