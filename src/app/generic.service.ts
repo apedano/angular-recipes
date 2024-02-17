@@ -3,7 +3,7 @@
 
 import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { Predicate } from "@angular/core";
-import { BehaviorSubject, catchError, map, Observable, Observer, of, skip, skipWhile, Subject, Subscription, throwError } from "rxjs";
+import { BehaviorSubject, catchError, map, Observable, Observer, of, OperatorFunction, skip, skipWhile, Subject, Subscription, throwError, UnaryFunction } from "rxjs";
 import { IdEntity } from "./model/id-entity.model";
 
 export abstract class GenericService<T extends IdEntity> {
@@ -99,8 +99,8 @@ export abstract class GenericService<T extends IdEntity> {
         )
     }
 
-    private fetchAll(): Observable<T[]> {
-        console.log('Refreshing team cache');
+    protected fetchAll(): Observable<T[]> {
+        console.log('Refreshing onject cache');
         return this.httpClient.get<{ [key: string]: T }>(
             this.getApiFullUrl() + '.json').pipe(
                 map((originalResponseData: { [key: string]: any }) => {
@@ -110,7 +110,7 @@ export abstract class GenericService<T extends IdEntity> {
                         // console.log('response data T', originalResponseData[idKey]);
                         valuesArray.push(this.mapToEntity(idKey, originalResponseData[idKey]))
                     }
-                    return valuesArray
+                    return valuesArray;
                 }),
                 catchError(errorRes => {
                     //error handling code goes here
@@ -120,6 +120,12 @@ export abstract class GenericService<T extends IdEntity> {
                 })
             );
     }
+
+
+    protected getAfterFetchFunction(): UnaryFunction<T[], T[]> {
+        return (tArray: T[]) => tArray;
+    }
+
 
 
 
