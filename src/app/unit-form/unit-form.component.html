@@ -6,12 +6,12 @@
 </mat-grid-list>
 
 <ng-container *ngIf="baseUnits$ | async as baseUnits">
-  <form (ngSubmit)="onSubmit()" #unitForm="ngForm">
+   <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)"> <!-- FormGroup -->
     <mat-grid-list cols="4" rowHeight="100px">
       <mat-grid-tile [colspan]="1">
         <mat-form-field>
           <mat-label>Nome</mat-label>
-          <input matInput placeholder="es. L" [(ngModel)]="unit.name" name="unitName">
+          <input matInput placeholder="es. L" [(ngModel)]="unit.name" name="unitName"> <!-- FormControl -->
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1">
@@ -42,7 +42,8 @@
         </mat-grid-tile>
       </ng-container>
     </mat-grid-list>
-
+    
+    <button type="submit" class="btn btn-success" [disabled]="!unitForm.form.valid">Submit</button>
   </form>
 </ng-container>
 

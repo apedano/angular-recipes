@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Recipe } from './model/recipe.model';import { GenericService } from './generic.service';
+import { GenericHttpBasedService } from './generic.service';
 import { HttpClient } from '@angular/common/http';
 import { Unit } from './model/unit.mode';
 import { Observable, map } from 'rxjs';
@@ -7,7 +7,7 @@ import { Observable, map } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UnitService extends GenericService<Unit> {
+export class UnitService extends GenericHttpBasedService<Unit> {
 
   constructor(httpClient: HttpClient) {
     super(httpClient);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Unit } from '../model/unit.mode';
 import { GenericFormComponent } from '../generic.form.component';
-import { FormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, NgForm, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UnitService } from '../unit.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -56,8 +56,8 @@ export class UnitFormComponent implements OnInit {
     }
   }
     
-  onSubmit() {
-    console.log("form submitted");
+  onSubmit(unitForm: NgForm) {
+    console.log("form submitted", unitForm, unitForm.form.controls['unitName']);
   }
   
 

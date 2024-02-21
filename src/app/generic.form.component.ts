@@ -1,5 +1,5 @@
 import { IdEntity } from "./model/id-entity.model";
-import { GenericService } from "./generic.service";
+import { GenericHttpBasedService } from "./generic.service";
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { first, Observable, Observer } from "rxjs";
@@ -20,7 +20,7 @@ export abstract class GenericFormComponent<T extends IdEntity> {
         }
     }
 
-    constructor(private genericService: GenericService<T>, private router: Router) { }
+    constructor(private genericService: GenericHttpBasedService<T>, private router: Router) { }
 
     initEntity(currentRoute: ActivatedRoute) {
         currentRoute.params
@@ -61,7 +61,9 @@ export abstract class GenericFormComponent<T extends IdEntity> {
         this.genericService.createOrUpdate(this.entity).subscribe(this.createAndStoreObserver);
     }
 
-    protected abstract mapFormToEntity(): void;
+    protected mapFormToEntity(): void {
+        // this.entity = this.
+    };
 
     protected abstract getRedirectUrlAfterSave(): any[];
 

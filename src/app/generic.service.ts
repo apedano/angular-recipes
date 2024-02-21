@@ -6,7 +6,7 @@ import { Predicate } from "@angular/core";
 import { BehaviorSubject, catchError, map, Observable, Observer, of, OperatorFunction, skip, skipWhile, Subject, Subscription, throwError, UnaryFunction } from "rxjs";
 import { IdEntity } from "./model/id-entity.model";
 
-export abstract class GenericService<T extends IdEntity> {
+export abstract class GenericHttpBasedService<T extends IdEntity> {
 
     readonly FIREBASE_BASE_URL: string = 'https://recipes-ffddb-default-rtdb.europe-west1.firebasedatabase.app/';
 
