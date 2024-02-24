@@ -5,13 +5,21 @@
   }
 </mat-grid-list>
 
+
 <ng-container *ngIf="baseUnits$ | async as baseUnits">
    <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)"> <!-- FormGroup -->
+    <ng-container *ngIf="appStateService.debugMode">
+      <pre>Valid ? {{unitForm.form.controls['unitName'].valid}}</pre> 
+      <pre>Dirty ? {{unitForm.form.controls['unitName'].dirty}}</pre>
+      <pre>Touched ? {{unitForm.form.controls['unitName'].touched}}</pre>
+      <pre>Pristine ? {{unitForm.form.controls['unitName'].pristine}}</pre>
+    </ng-container>
     <mat-grid-list cols="4" rowHeight="100px">
       <mat-grid-tile [colspan]="1">
         <mat-form-field>
           <mat-label>Nome</mat-label>
           <input matInput placeholder="es. L" [(ngModel)]="unit.name" name="unitName"> <!-- FormControl -->
+          
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1">

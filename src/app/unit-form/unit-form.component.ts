@@ -11,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
+import { AppStateService } from '../app-state.service';
 
 export interface Tile {
   color: string;
@@ -40,7 +41,7 @@ export class UnitFormComponent implements OnInit {
 
   //use https://github.com/apedano/angular-f1-app/blob/main/src/app/team/team-form/team-form.component.ts
 
-  constructor(private unitService: UnitService, router: Router, private currentRoute: ActivatedRoute) {
+  constructor(private unitService: UnitService, router: Router, private currentRoute: ActivatedRoute, public appStateService: AppStateService) {
     
   }
   
