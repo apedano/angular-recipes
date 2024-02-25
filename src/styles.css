@@ -23,6 +23,11 @@ button.primary {
   border-radius: 8px;
 }
 
+.left-align-forced {
+  width:100%;
+  text-align:left;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

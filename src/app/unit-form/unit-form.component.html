@@ -1,31 +1,29 @@
-<mat-grid-list cols="4" rowHeight="100px">
-  @for (tile of tiles; track tile) {
-  <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows"
-    [style.background]="tile.color">{{tile.text}}</mat-grid-tile>
-  }
-</mat-grid-list>
-
 
 <ng-container *ngIf="baseUnits$ | async as baseUnits">
-   <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)"> <!-- FormGroup -->
-    <ng-container *ngIf="appStateService.debugMode">
-      <pre>Valid ? {{unitForm.form.controls['unitName'].valid}}</pre> 
+  <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)"> <!-- FormGroup -->
+    <ng-container *ngIf="appStateService.debugMode()">
+      <span>Debug Mode: {{appStateService.debugMode()}}</span>
+      <pre>Valid ? {{unitForm.form.controls['unitName'].valid}}</pre>
       <pre>Dirty ? {{unitForm.form.controls['unitName'].dirty}}</pre>
       <pre>Touched ? {{unitForm.form.controls['unitName'].touched}}</pre>
       <pre>Pristine ? {{unitForm.form.controls['unitName'].pristine}}</pre>
+      <pre>Value unitName: {{unitForm.form.controls['unitName'].value}}</pre>
+      <pre>Form valid: {{unitForm.form.valid}}</pre>
     </ng-container>
-    <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-list cols="5" rowHeight="100px">
       <mat-grid-tile [colspan]="1">
         <mat-form-field>
           <mat-label>Nome</mat-label>
-          <input matInput placeholder="es. L" [(ngModel)]="unit.name" name="unitName"> <!-- FormControl -->
-          
+          <input matInput placeholder="es. L per 'litri'" appAllCaps [(ngModel)]="unit.name" name="unitName" required> <!-- FormControl -->
+          @if (unitForm.form.controls['unitName']?.hasError('required')) {
+            <mat-error>Il nome e' obbligatorios</mat-error>
+            }
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1">
-          <mat-checkbox [(ngModel)]="isBaseUnit" (change)="onCheckboxChange($event)" name="unitIsBase">
-            Unita' di base ({{isBaseUnit}})
-          </mat-checkbox>
+        <mat-checkbox [(ngModel)]="isBaseUnit" (change)="onCheckboxChange($event)" name="unitIsBase">
+          Unita' di base ({{isBaseUnit}})
+        </mat-checkbox>
       </mat-grid-tile>
       <ng-container *ngIf="!isBaseUnit">
         <mat-grid-tile [colspan]="1">
@@ -41,49 +39,22 @@
         <mat-grid-tile [colspan]="1">
           <mat-form-field>
             <mat-label>Conversione</mat-label>
-            <mat-select [(ngModel)]="unit.baseUnit" name="baseUnit">
-              @for (baseUnit of baseUnits; track baseUnit) {
-              <mat-option [value]="baseUnit">{{baseUnit.name}}</mat-option>
-              }
-            </mat-select>
+            <input type="number" matInput [(ngModel)]="unit.conversionRatio" name="conversion"
+              placeholder="Inserisci un numero" pattern="^[0-9]+(,[0-9]+)?$">
+            <mat-hint>Separatore: ,</mat-hint>
+            @if (unitForm.form.controls['conversion'].hasError('pattern') ||
+            unitForm.form.controls['conversion'].hasError('number')) {
+            <mat-error>Il fattore di conversione deve essere un <strong>numero</strong></mat-error>
+            }
           </mat-form-field>
         </mat-grid-tile>
       </ng-container>
+      <mat-grid-tile [colspan]="1">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!unitForm.form.valid">Salva</button>
+      </mat-grid-tile>
+
     </mat-grid-list>
-    
-    <button type="submit" class="btn btn-success" [disabled]="!unitForm.form.valid">Submit</button>
+
+
   </form>
-</ng-container>
-
-
-<ng-container *ngIf="baseUnits$ | async as baseUnits">
-  <!-- <form (ngSubmit)="onSubmit()" #unitForm="ngForm">
-
-      <mdb-form-control class="mb-4">
-        <input mdbInput type="email" id="form2Example1" class="form-control" />
-        <label mdbLabel class="form-label" for="form2Example1">Email address</label>
-      </mdb-form-control>
-          <div class="form-group">
-            <label for="base">Base Unit</label>
-            <select class="form-control" id="baseUnit"
-                    required
-                    [(ngModel)]="unit.baseUnit" name="baseUnit"
-                    #baseUnit="ngModel">
-              <option *ngFor="let bUnit of baseUnits" [value]="bUnit">{{bUnit.name}}</option>
-            </select>
-            <div [hidden]="baseUnit.valid || baseUnit.pristine" class="alert alert-danger">
-              Power is required
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <span class="p-float-label">
-              <input type="text" class="form-control" id="name"
-                required
-                [(ngModel)]="unit.name" name="name">
-          </span>
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="!unitForm.form.valid">Submit</button>
-       <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button> 
-</form> -->
 </ng-container>
