@@ -6,7 +6,14 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 })
 export class AppStateService {
 
-  public debugMode: WritableSignal<boolean> = signal(false);
+  public debugMode: WritableSignal<boolean> = signal(true);
 
   constructor() { }
+
+  logIfDebug(message?: any, ...optionalParams: any[]) {
+    if(this.debugMode()) {
+      console.log(message,optionalParams);  
+    }
+  }
+
 }

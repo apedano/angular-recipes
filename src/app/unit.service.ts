@@ -30,7 +30,7 @@ export class UnitService extends GenericHttpBasedService<Unit> {
   }
 
   protected override mapToEntity(id: string, reponseData: any): Unit {
-    console.log('Unit responseData:', reponseData)
+    console.log('Unit responseData:', reponseData, 'id', id )
     return new Unit(
       reponseData.name,reponseData.baseUnit, reponseData.conversionRatio,id
     );

@@ -90,8 +90,6 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
         this.fetchAllSubscription = this.fetchAll().subscribe(this.fetchAllObserver);
     }
 
-
-
     protected getByFilter(filter: Predicate<T>): Observable<T[]> {
         return this.allValuesSubject.pipe(
             skipWhile((v: any) => v === null),
@@ -107,7 +105,7 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
                     // console.log('originalResponseData from fethAll call', originalResponseData);
                     const valuesArray: T[] = [];
                     for (const idKey in originalResponseData) {
-                        // console.log('response data T', originalResponseData[idKey]);
+                        console.log('response data T', originalResponseData[idKey], "for Idkey", idKey);
                         valuesArray.push(this.mapToEntity(idKey, originalResponseData[idKey]))
                     }
                     return valuesArray;

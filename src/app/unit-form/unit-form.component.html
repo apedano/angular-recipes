@@ -1,22 +1,36 @@
-
 <ng-container *ngIf="baseUnits$ | async as baseUnits">
-  <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)"> <!-- FormGroup -->
-    <ng-container *ngIf="appStateService.debugMode()">
+  <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)" baseUnitFormValidator> <!-- FormGroup -->
+    <ng-container *ngIf="appStateService.debugMode() && unitForm.form.controls['unitName']">
       <span>Debug Mode: {{appStateService.debugMode()}}</span>
+      <pre>UNITNAME control state:</pre>
       <pre>Valid ? {{unitForm.form.controls['unitName'].valid}}</pre>
       <pre>Dirty ? {{unitForm.form.controls['unitName'].dirty}}</pre>
       <pre>Touched ? {{unitForm.form.controls['unitName'].touched}}</pre>
       <pre>Pristine ? {{unitForm.form.controls['unitName'].pristine}}</pre>
       <pre>Value unitName: {{unitForm.form.controls['unitName'].value}}</pre>
       <pre>Form valid: {{unitForm.form.valid}}</pre>
+      <pre>Form Errors: {{unitForm.errors | json}}</pre>
+      <!-- unitForm.controls returns a map, the keyvalue pipe returns 
+        the iterator of key values -->
+      @for(controlkv of unitForm.controls | keyvalue; track controlkv) {
+        @if(controlkv.value.errors != null) {
+          <pre>{{controlkv.key}} errors</pre>
+          <pre>{{controlkv.value.errors | json}}</pre>
+        }
+      }
     </ng-container>
+   
     <mat-grid-list cols="5" rowHeight="100px">
       <mat-grid-tile [colspan]="1">
         <mat-form-field>
           <mat-label>Nome</mat-label>
-          <input matInput placeholder="es. L per 'litri'" appAllCaps [(ngModel)]="unit.name" name="unitName" required> <!-- FormControl -->
-          @if (unitForm.form.controls['unitName']?.hasError('required')) {
-            <mat-error>Il nome e' obbligatorios</mat-error>
+          <input matInput placeholder="es. L per 'litri'" appAllCaps [(ngModel)]="unit.name" name="unitName" [ngModelOptions]="{updateOn: 'blur'}" required unitNameUnique >
+          <!-- FormControl -->
+          @if (unitForm.form.controls['unitName'] && unitForm.form.controls['unitName'].hasError('required')) {
+          <mat-error>Il nome e' obbligatorio</mat-error>
+          }
+          @if (unitForm.form.controls['unitName'] && unitForm.form.controls['unitName'].hasError('unitNameUnique')) {
+            <mat-error>Il nome e' gia' esistente</mat-error>
             }
         </mat-form-field>
       </mat-grid-tile>
@@ -24,6 +38,9 @@
         <mat-checkbox [(ngModel)]="isBaseUnit" (change)="onCheckboxChange($event)" name="unitIsBase">
           Unita' di base ({{isBaseUnit}})
         </mat-checkbox>
+        @if (unitForm.hasError('baseUnitInvalid')) {
+          <mat-error>Unita di base e conversione sono obbligatori</mat-error>
+        }
       </mat-grid-tile>
       <ng-container *ngIf="!isBaseUnit">
         <mat-grid-tile [colspan]="1">
@@ -40,13 +57,17 @@
           <mat-form-field>
             <mat-label>Conversione</mat-label>
             <input type="number" matInput [(ngModel)]="unit.conversionRatio" name="conversion"
-              placeholder="Inserisci un numero" pattern="^[0-9]+(,[0-9]+)?$">
-            <mat-hint>Separatore: ,</mat-hint>
-            @if (unitForm.form.controls['conversion'].hasError('pattern') ||
-            unitForm.form.controls['conversion'].hasError('number')) {
-            <mat-error>Il fattore di conversione deve essere un <strong>numero</strong></mat-error>
+              placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$">
+            <mat-hint>Separatore: .</mat-hint>
+            @if(unitForm.valid) {
+              <mat-hint>1 {{unitForm.controls['unitName'].value}} = {{unitForm.controls['conversion'].value}} {{unit.baseUnit?.name}}</mat-hint>
+            } 
+            @if (unitForm.form.controls['conversion'] && (unitForm.form.controls['conversion'].hasError('pattern') ||
+            unitForm.form.controls['conversion'].hasError('number'))) {
+            <mat-error>Deve essere un <strong>numero</strong></mat-error>
             }
           </mat-form-field>
+          
         </mat-grid-tile>
       </ng-container>
       <mat-grid-tile [colspan]="1">
