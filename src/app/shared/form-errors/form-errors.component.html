@@ -1,0 +1,10 @@
+<pre>Form valid: {{form.valid}}</pre>
+<pre>Form Errors: {{form.errors | json}}</pre>
+<!-- unitForm.controls returns a map, the keyvalue pipe returns 
+        the iterator of key values -->
+@for(controlkv of form.controls | keyvalue; track controlkv) {
+@if(controlkv.value.errors != null) {
+<pre>{{controlkv.key}} errors</pre>
+<pre>{{controlkv.value.errors | json}}</pre>
+}
+}

@@ -3,11 +3,12 @@ import { GenericHttpBasedService } from './generic.service';
 import { HttpClient } from '@angular/common/http';
 import { Unit } from './model/unit.mode';
 import { Observable, map } from 'rxjs';
+import { GenericNameBasedService } from './generic.name.based.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitService extends GenericHttpBasedService<Unit> {
+export class UnitService extends GenericHttpBasedService<Unit> implements GenericNameBasedService<Unit> {
 
   constructor(httpClient: HttpClient) {
     super(httpClient);

@@ -1,0 +1,24 @@
+<ng-container *ngIf="this.appStateService.debugMode()">
+Form<pre>{{ingredientForm.errors| json}}</pre>
+<form-errors [form]="ingredientForm"></form-errors>
+</ng-container>
+<form (ngSubmit)="onSubmit()" [formGroup]="ingredientForm">
+    <mat-form-field>
+        <input matInput placeholder="es. Farina" formControlName="name"> <!-- FormControl -->
+        @if (ingredientForm.controls['name'] &&
+        ingredientForm.controls['name'].hasError('required')) {
+        <mat-error>Il nome e' obbligatorio</mat-error>
+        }
+        @if (ingredientForm.controls['name'] &&
+        ingredientForm.controls['name'].hasError('minlength')) {
+        <mat-error>Il nome deve contenere almeno 3 caratteri</mat-error>
+        }
+        @if (ingredientForm.controls['name'] &&
+        ingredientForm.controls['name'].hasError('nameUnique')) {
+        <mat-error>Il nome {{ingredientForm.controls['name'].value}} gia' esistente</mat-error>
+        }
+    </mat-form-field>
+    <button mat-stroked-button color="accent" type="button" (click)="updateName()">Update Name</button>
+    <button mat-raised-button color="primary" type="submit" class="btn btn-success"
+        [disabled]="!ingredientForm.valid">Submit</button>
+</form>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Unit } from '../model/unit.mode';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { UnitService } from '../unit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,13 +14,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { AppStateService } from '../app-state.service';
 import { AllCapsDirective } from '../directives/all-caps.directive';
 import { BaseUnitFormValidatorDirective} from '../directives/base-unit-form-validator.directive';
-import { UnitNameUniqueValidatorDirective } from '../directives/unit-name-unique-validator.directive';
+import { NameUniqueValidatorDirective } from '../directives/name-unique-validator.directive';
+import { FormErrorsComponent } from '../shared/form-errors/form-errors.component';
 
 @Component({
   selector: 'app-unit-form',
   standalone: true,
   imports: [CommonModule, FormsModule, MatGridListModule, MatInputModule, MatFormFieldModule, 
-    MatSelectModule, MatCheckboxModule, MatButtonModule, AllCapsDirective, BaseUnitFormValidatorDirective, UnitNameUniqueValidatorDirective],
+    MatSelectModule, MatCheckboxModule, MatButtonModule, AllCapsDirective, BaseUnitFormValidatorDirective, NameUniqueValidatorDirective, FormErrorsComponent],
   templateUrl: './unit-form.component.html',
   styleUrl: './unit-form.component.css'
 })
@@ -32,9 +33,19 @@ export class UnitFormComponent implements OnInit {
   
   //use https://github.com/apedano/angular-f1-app/blob/main/src/app/team/team-form/team-form.component.ts
 
-  constructor(private unitService: UnitService, router: Router, private currentRoute: ActivatedRoute, public appStateService: AppStateService) {
+  constructor(public unitService: UnitService, router: Router, private currentRoute: ActivatedRoute, public appStateService: AppStateService) {
       
   }
+
+  private createAndStoreObserver: Partial<Observer<any>> = {
+    next: () => {
+        // this.router.navigate(this.getRedirectUrlAfterSave());
+        alert("Item stored");
+    },
+    error: err => {
+        console.log(err);
+    }
+}
   
   ngOnInit(): void {
     this.baseUnits$ = this.unitService.getAllBase();
@@ -52,19 +63,12 @@ export class UnitFormComponent implements OnInit {
   onSubmit(unitForm: NgForm) {
     this.appStateService.logIfDebug("form submitted", unitForm, unitForm.form.controls['unitName']);
     this.appStateService.logIfDebug("submitted unit", this.unit);
-    // let controls = unitForm.controls;
-    // if(unitForm.valid) {
-    //   let unit: Unit = new Unit(
-    //     controls['name'].value,
-    //     this.isBaseUnit ? null : controls['baseUnit'].value 
-    //   );
+    if(unitForm.valid) {
+      this.unitService.createOrUpdate(this.unit).subscribe(this.createAndStoreObserver);
 
-    //   this.unitService.createOrUpdate()
-    // } else {
-    //   console.log("invalid form no submit allowed")
-    // }
-    
-
+    } else {
+      console.log("invalid form no submit allowed")
+    }
   }
   
 
