@@ -2,13 +2,20 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {DetailsComponent} from './details/details.component';
 import { UnitFormComponent } from './unit-form/unit-form.component';
-import { IngredientFormComponent } from './ingredient-form/ingredient-form.component';
+import { IngredientFormComponent } from './ingredients/ingredient-form/ingredient-form.component';
+import { RecipeFormComponent } from './recipes/recipe-form/recipe-form.component';
+
 
 const routeConfig: Routes = [
     {
         path: '',
         component: HomeComponent,
         title: 'Home page',
+    },
+    {
+        path: 'newRecipe',
+        component: RecipeFormComponent,
+        title: 'New Recipe',
     },
     {
         path: 'newUnit',

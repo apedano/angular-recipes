@@ -21,7 +21,6 @@ export class UnitService extends GenericHttpBasedService<Unit> implements Generi
 
   getAllBase(): Observable<Unit[]> {
     return this.getByFilter((u: Unit) => {
-      console.log("Filter on ", u, u.baseUnit == undefined)
       return u.baseUnit == undefined})
     // .pipe(map((unitArray: Team[]) => teamArray[0])
   }

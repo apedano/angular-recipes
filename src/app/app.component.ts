@@ -28,6 +28,10 @@ import {MatMenuModule} from '@angular/material/menu';
         <mat-icon>dialpad</mat-icon>
         <span>Unita'</span>
       </button>
+      <button mat-menu-item [routerLink]="['/newRecipe']">
+        <mat-icon>cake</mat-icon>
+        <span>Nuova ricetta</span>
+      </button>
       <button mat-menu-item [routerLink]="['/newIngredient']">
         <mat-icon>voicemail</mat-icon>
         <span>Nuovo ingrediente</span>

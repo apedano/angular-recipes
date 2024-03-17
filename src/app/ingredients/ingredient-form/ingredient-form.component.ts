@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { AppStateService } from '../app-state.service';
-import { Ingredient } from '../model/ingredient.model';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AppStateService } from '../../app-state.service';
+import { Ingredient } from '../../model/ingredient.model';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { NameUniqueValidator } from '../directives/name-unique.validator';
-import { IngredientService } from '../ingredient.service';
+import { NameUniqueValidator } from '../../directives/name-unique.validator';
+import { IngredientService } from '../../ingredient.service';
 import { Observer } from 'rxjs/internal/types';
 import { HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormErrorsComponent } from '../shared/form-errors/form-errors.component';
+import { FormErrorsComponent } from '../../shared/form-errors/form-errors.component';
 
 @Component({
   selector: 'app-ingredient-form',
@@ -23,6 +23,7 @@ export class IngredientFormComponent {
 
   ingredientForm!: FormGroup;
   ingredient: Ingredient = new Ingredient('');
+  @Output() ingredientEmitter: EventEmitter<Ingredient> =new EventEmitter();
 
   private nameUniqueValidator!: NameUniqueValidator<Ingredient>;
 
@@ -51,7 +52,8 @@ export class IngredientFormComponent {
   private createAndStoreObserver: Partial<Observer<HttpResponse<{ name: string }>>> = {
     next: (httpResponse) => {
       alert("Ingredient saved");
-      this.appStateService.logIfDebug("Ingredient response data", httpResponse)
+      this.appStateService.logIfDebug("Ingredient response data", httpResponse);
+      // this.ingredientEmitter.emit()s
     },
     error: err => {
       console.log(err);

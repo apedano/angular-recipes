@@ -8,19 +8,22 @@ import { provideRouter } from '@angular/router';
 import routeConfig from './app/routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { environment } from './environments/environment.development';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { httpInterceptorProviders } from './app/shared/http-interceptors..provider';
+import { LoggingHttpInterceptor } from './app/shared/logging-http.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideProtractorTestingSupport(), 
     provideRouter(routeConfig), 
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
+    httpInterceptorProviders,
     importProvidersFrom([
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
       provideAuth(() => getAuth()),
