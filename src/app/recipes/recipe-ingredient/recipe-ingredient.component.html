@@ -1,0 +1,13 @@
+
+<ng-container *ngIf="ingredientsObs | async as ingredients">
+  <mat-form-field>
+    <mat-select>
+      @for (ing of ingredients; track ing) {
+      <mat-option [value]="ing">{{ing.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</ng-container>
+
+
+<button mat-mini-fab color="accent" type="button" (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>

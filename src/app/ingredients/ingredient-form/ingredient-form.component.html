@@ -18,7 +18,7 @@ Form<pre>{{ingredientForm.errors| json}}</pre>
         <mat-error>Il nome {{ingredientForm.controls['name'].value}} gia' esistente</mat-error>
         }
     </mat-form-field>
-    <button mat-stroked-button color="accent" type="button" (click)="updateName()">Update Name</button>
+    <!-- <button mat-stroked-button color="accent" type="button" (click)="updateName()">Update Name</button> -->
     <button mat-raised-button color="primary" type="submit" class="btn btn-success"
         [disabled]="!ingredientForm.valid">Submit</button>
 </form>
