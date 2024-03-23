@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { GenericHttpBasedService } from './generic.service';
-import { HttpClient } from '@angular/common/http';
-import { Unit } from './model/unit.mode';
+import { GenericHttpBasedService } from '../generic.service';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Unit } from '../model/unit.mode';
 import { Observable, map } from 'rxjs';
-import { GenericNameBasedService } from './generic.name.based.service';
+import { GenericNameBasedService } from '../generic.name.based.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,4 +35,11 @@ export class UnitService extends GenericHttpBasedService<Unit> implements Generi
       reponseData.name,reponseData.baseUnit, reponseData.conversionRatio,id
     );
   }
+
+  public override createOrUpdate(unit: Unit): Observable<HttpResponse<{ name: string }>> {
+    unit.name = unit.name.toUpperCase();
+    return super.createOrUpdate(unit);
+  }
+
+
 }

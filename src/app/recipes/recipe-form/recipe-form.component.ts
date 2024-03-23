@@ -14,6 +14,8 @@ import { Ingredient } from '../../model/ingredient.model';
 import { IngredientService } from '../../ingredient.service';
 import { RecipeIngredientComponent } from "../recipe-ingredient/recipe-ingredient.component";
 import { CommonModule } from '@angular/common';
+import { UnitService } from '../../units/unit.service';
+import { Unit } from '../../model/unit.mode';
 
 
 @Component({
@@ -28,10 +30,12 @@ export class RecipeFormComponent {
 
   
   public ingredientsObs!: Observable<Ingredient[]>;
+  public unitObs!: Observable<Unit[]>;
 
-  constructor( private ingredientService: IngredientService, router: Router, public dialog: MatDialog) {
+  constructor( private ingredientService: IngredientService, private unitService:UnitService, router: Router, public dialog: MatDialog) {
     // super(recipeService, router);
     this.ingredientsObs = ingredientService.getAll();
+    this.unitObs = unitService.getAll();
   }
 
   // protected override emptyEntity(): Recipe {

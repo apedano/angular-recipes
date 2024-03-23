@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Unit } from '../model/unit.mode';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Unit } from '../../model/unit.mode';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Observable, Observer, of } from 'rxjs';
 import { UnitService } from '../unit.service';
@@ -11,11 +11,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
-import { AppStateService } from '../app-state.service';
-import { AllCapsDirective } from '../directives/all-caps.directive';
-import { BaseUnitFormValidatorDirective} from '../directives/base-unit-form-validator.directive';
-import { NameUniqueValidatorDirective } from '../directives/name-unique-validator.directive';
-import { FormErrorsComponent } from '../shared/form-errors/form-errors.component';
+import { AppStateService } from '../../app-state.service';
+import { AllCapsDirective } from '../../directives/all-caps.directive';
+import { BaseUnitFormValidatorDirective} from '../../directives/base-unit-form-validator.directive';
+import { NameUniqueValidatorDirective } from '../../directives/name-unique-validator.directive';
+import { FormErrorsComponent } from '../../shared/form-errors/form-errors.component';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-unit-form',
@@ -27,20 +28,23 @@ import { FormErrorsComponent } from '../shared/form-errors/form-errors.component
 })
 export class UnitFormComponent implements OnInit {
   baseUnits$: Observable<Unit[]> | undefined;
-  unit: Unit = new Unit();
+  unit: Unit = new Unit('');
   isBaseUnit: boolean = false;
   initialized: boolean = false;
   
+  @Output('newUnit') unitEmitter: EventEmitter<Unit> = new EventEmitter();
+
   //use https://github.com/apedano/angular-f1-app/blob/main/src/app/team/team-form/team-form.component.ts
 
   constructor(public unitService: UnitService, router: Router, private currentRoute: ActivatedRoute, public appStateService: AppStateService) {
       
   }
 
-  private createAndStoreObserver: Partial<Observer<any>> = {
+  private createAndStoreObserver: Partial<Observer<HttpResponse<{ name: string }>>> = {
     next: () => {
-        // this.router.navigate(this.getRedirectUrlAfterSave());
-        alert("Item stored");
+      this.unitService.getByName(this.unit.name)
+      .subscribe({next: (u) => this.unitEmitter.emit(u)})
+
     },
     error: err => {
         console.log(err);

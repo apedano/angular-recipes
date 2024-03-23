@@ -1,13 +1,27 @@
-
 <ng-container *ngIf="ingredientsObs | async as ingredients">
-  <mat-form-field>
-    <mat-select>
-      @for (ing of ingredients; track ing) {
-      <mat-option [value]="ing">{{ing.name}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <ng-container *ngIf="unitsObs | async as units">
+    <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)">
+      <mat-form-field>
+        <mat-select [(ngModel)]="recipeIngredient.ingredient" #ingredientSelect name="ingredient" required>
+          @for (ing of ingredients; track ing) {
+          <mat-option [value]="ing">{{ing.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-mini-fab color="accent" type="button" (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>
+      <mat-form-field>
+        <input type="number" matInput [(ngModel)]="recipeIngredient.amount" name="amount"
+          placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(ngModel)]="recipeIngredient.unit" name="unit">
+          @for (u of units; track u) {
+          <mat-option [value]="u">{{u.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-mini-fab color="accent" type="button" (click)="openNewUnitDialog()"><mat-icon>add</mat-icon></button>
+    </form>
+  </ng-container>
 </ng-container>
 
-
-<button mat-mini-fab color="accent" type="button" (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>

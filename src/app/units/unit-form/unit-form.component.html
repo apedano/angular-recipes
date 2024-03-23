@@ -11,8 +11,8 @@
       <form-errors [form]="unitForm.form"/>
     </ng-container>
    
-    <mat-grid-list cols="5" rowHeight="100px">
-      <mat-grid-tile [colspan]="1">
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile [colspan]="1" >
         <mat-form-field>
           <mat-label>Nome</mat-label>
           <input matInput placeholder="es. L per 'litri'" appAllCaps [(ngModel)]="unit.name" name="unitName" [ngModelOptions]="{updateOn: 'blur'}" required [nameUnique]="unitService" [validateUppercase]="true" >
@@ -27,7 +27,7 @@
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1">
         <mat-checkbox [(ngModel)]="isBaseUnit" (change)="onCheckboxChange($event)" name="unitIsBase">
-          Unita' di base ({{isBaseUnit}})
+          Unita' di base
         </mat-checkbox>
         @if (unitForm.hasError('baseUnitInvalid')) {
           <mat-error>Unita di base e conversione sono obbligatori</mat-error>
@@ -49,9 +49,8 @@
             <mat-label>Conversione</mat-label>
             <input type="number" matInput [(ngModel)]="unit.conversionRatio" name="conversion"
               placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$">
-            <mat-hint>Separatore: .</mat-hint>
             @if(unitForm.valid) {
-              <mat-hint>1 {{unitForm.controls['unitName'].value}} = {{unitForm.controls['conversion'].value}} {{unit.baseUnit?.name}}</mat-hint>
+              <mat-hint>1 {{unitForm.controls['unitName'].value}}={{unitForm.controls['conversion'].value}} {{unit.baseUnit?.name}}</mat-hint>
             } 
             @if (unitForm.form.controls['conversion'] && (unitForm.form.controls['conversion'].hasError('pattern') ||
             unitForm.form.controls['conversion'].hasError('number'))) {
