@@ -24,6 +24,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routeConfig), 
     provideHttpClient(withInterceptorsFromDi()),
     httpInterceptorProviders,
+    
     importProvidersFrom([
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
       provideAuth(() => getAuth()),

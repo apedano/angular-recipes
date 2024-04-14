@@ -1,6 +1,6 @@
 <ng-container *ngIf="ingredientsObs | async as ingredients">
   <ng-container *ngIf="unitsObs | async as units">
-    <form #unitForm="ngForm" (ngSubmit)="onSubmit(unitForm)">
+    <form #recipeIngredientForm="ngForm" (ngSubmit)="onSubmit(recipeIngredientForm)">
       <mat-form-field>
         <mat-select [(ngModel)]="recipeIngredient.ingredient" #ingredientSelect name="ingredient" required>
           @for (ing of ingredients; track ing) {
@@ -8,7 +8,8 @@
           }
         </mat-select>
       </mat-form-field>
-      <button mat-mini-fab color="accent" type="button" (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>
+      <button mat-mini-fab color="accent" type="button"
+        (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>
       <mat-form-field>
         <input type="number" matInput [(ngModel)]="recipeIngredient.amount" name="amount"
           placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$">
@@ -21,7 +22,8 @@
         </mat-select>
       </mat-form-field>
       <button mat-mini-fab color="accent" type="button" (click)="openNewUnitDialog()"><mat-icon>add</mat-icon></button>
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="!recipeIngredientForm.form.valid">Aggiungi/Modifica</button>
     </form>
   </ng-container>
 </ng-container>
-

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Ingredient } from '../../model/ingredient.model';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NewIngredientDialogComponent } from '../../ingredients/new-ingredient-dialog/new-ingredient-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
@@ -12,6 +12,8 @@ import { Unit } from '../../model/unit.mode';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NewUnitDialogComponent } from '../../units/new-unit-dialog/new-unit-dialog.component';
+import { AppStateService } from '../../app-state.service';
+import { IngredientFormComponent } from '../../ingredients/ingredient-form/ingredient-form.component';
 
 
 @Component({
@@ -26,13 +28,20 @@ export class RecipeIngredientComponent {
 
   @Input() ingredientsObs!: Observable<Ingredient[]>;
   @Input() unitsObs!: Observable<Unit[]>;
-  @Output() value!: EventEmitter<RecipeIngredient>;
+  @Input() recipeIngredient: RecipeIngredient = new RecipeIngredient();
+  @Output() value: EventEmitter<RecipeIngredient> = new EventEmitter();
   @ViewChild('ingredientSelect') ingredientSelect!: MatSelect;
   selectedIngredient: Ingredient | undefined;
-  recipeIngredient: RecipeIngredient = new RecipeIngredient();
+  
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private appStateService: AppStateService) {
   }
+
+  // ngOnInit(): void {
+  //   if(this.data.recipeIngredient) {
+  //     this.recipeIngredient = this.data.recipeIngredient
+  //   }
+  // }
 
   openNewIngredientDialog() {
     let newIngredientDialogRef = this.dialog.open(NewIngredientDialogComponent); //we can add initial data here
@@ -50,7 +59,11 @@ export class RecipeIngredientComponent {
     });
   }
 
-  onSubmit(_t13: NgForm) {
-    throw new Error('Method not implemented.');
+  onSubmit(recipeIngredientForm: NgForm) {
+    this.value.emit(this.recipeIngredient);
+    this.appStateService.logIfDebug("Submitted RecipeIngredient form", recipeIngredientForm);
+    this.appStateService.logIfDebug("Submitted RecipeIngredient", this.recipeIngredient);
+    //recipeIngredientForm.reset();
+    this.recipeIngredient = new RecipeIngredient();
   }
 }

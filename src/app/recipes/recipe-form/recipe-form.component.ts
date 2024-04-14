@@ -16,23 +16,24 @@ import { RecipeIngredientComponent } from "../recipe-ingredient/recipe-ingredien
 import { CommonModule } from '@angular/common';
 import { UnitService } from '../../units/unit.service';
 import { Unit } from '../../model/unit.mode';
+import { RecipeIngredientListControlComponent } from "../recipe-ingredient-list-control/recipe-ingredient-list-control.component";
 
 
 @Component({
-  selector: 'app-recipe-form',
-  standalone: true,
-  templateUrl: './recipe-form.component.html',
-  styleUrl: './recipe-form.component.css',
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, ReactiveFormsModule, RecipeIngredientComponent]
+    selector: 'app-recipe-form',
+    standalone: true,
+    templateUrl: './recipe-form.component.html',
+    styleUrl: './recipe-form.component.css',
+    imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, ReactiveFormsModule, RecipeIngredientComponent, RecipeIngredientListControlComponent]
 })
 // export class RecipeFormComponent extends GenericFormComponent<Recipe> {
 export class RecipeFormComponent {
 
-  
+  public recipe: Recipe = new Recipe();
   public ingredientsObs!: Observable<Ingredient[]>;
   public unitObs!: Observable<Unit[]>;
 
-  constructor( private ingredientService: IngredientService, private unitService:UnitService, router: Router, public dialog: MatDialog) {
+  constructor(private ingredientService: IngredientService, private unitService:UnitService, router: Router, public dialog: MatDialog) {
     // super(recipeService, router);
     this.ingredientsObs = ingredientService.getAll();
     this.unitObs = unitService.getAll();
