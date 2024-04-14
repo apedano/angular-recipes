@@ -13,7 +13,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NewUnitDialogComponent } from '../../units/new-unit-dialog/new-unit-dialog.component';
 import { AppStateService } from '../../app-state.service';
-import { IngredientFormComponent } from '../../ingredients/ingredient-form/ingredient-form.component';
+import { UnitService } from '../../units/unit.service';
+import { IngredientService } from '../../ingredient.service';
 
 
 @Component({
@@ -26,15 +27,19 @@ import { IngredientFormComponent } from '../../ingredients/ingredient-form/ingre
 export class RecipeIngredientComponent {
 
 
-  @Input() ingredientsObs!: Observable<Ingredient[]>;
-  @Input() unitsObs!: Observable<Unit[]>;
+  ingredientsObs!: Observable<Ingredient[]>;
+  unitsObs!: Observable<Unit[]>;
   @Input() recipeIngredient: RecipeIngredient = new RecipeIngredient();
   @Output() value: EventEmitter<RecipeIngredient> = new EventEmitter();
   @ViewChild('ingredientSelect') ingredientSelect!: MatSelect;
   selectedIngredient: Ingredient | undefined;
   
 
-  constructor(public dialog: MatDialog, private appStateService: AppStateService) {
+  constructor(public dialog: MatDialog, private appStateService: AppStateService, 
+    unitService: UnitService,
+    ingredientService: IngredientService) {
+    this.unitsObs = unitService.getAll();
+    this.ingredientsObs = ingredientService.getAll();
   }
 
   // ngOnInit(): void {

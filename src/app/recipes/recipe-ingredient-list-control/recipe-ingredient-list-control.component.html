@@ -18,7 +18,7 @@
 <mat-grid-list cols="1" rowHeight="80px">
     <mat-grid-tile>Aggiungi nuovo ingrediente alla ricetta</mat-grid-tile>
     <mat-grid-tile>
-        <app-recipe-ingredient [ingredientsObs]="ingredientsObs" [unitsObs]="unitObs"
+        <app-recipe-ingredient
             (value)="addRecipeIngredient($event)"></app-recipe-ingredient>
     </mat-grid-tile>
 
