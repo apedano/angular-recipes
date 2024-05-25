@@ -1,18 +1,9 @@
-<!-- <form (ngSubmit)="onSubmit()" [formGroup]="entityForm"> -->
-    <!-- <mat-form-field>
-        <mat-label>Ingrediente</mat-label>
-        <mat-select>
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2" disabled>Option 2 (disabled)</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field> -->
-        
-      <!-- </mat-form-field> -->
-    
-
-<!-- </form> -->
+<ng-container *ngIf="this.appStateService.debugMode()">
+  Form<pre>{{recipeForm.errors| json}}</pre>
+  <form-errors [form]="recipeForm"></form-errors>
+  </ng-container>
+  <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm">
+  </form>
 
 <app-recipe-ingredient-list-control [recipeIngredients]="recipe.ingredients"></app-recipe-ingredient-list-control>
 

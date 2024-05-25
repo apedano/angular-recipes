@@ -11,11 +11,11 @@ import { RecipeIngredientDialogComponent } from '../recipe-ingredient-dialog/rec
 
 
 @Component({
-    selector: 'app-recipe-ingredient-list-control',
-    standalone: true,
-    templateUrl: './recipe-ingredient-list-control.component.html',
-    styleUrl: './recipe-ingredient-list-control.component.css',
-    imports: [MatGridListModule, MatButtonModule, MatIconModule, RecipeIngredientComponent, MatDialogModule]
+  selector: 'app-recipe-ingredient-list-control',
+  standalone: true,
+  templateUrl: './recipe-ingredient-list-control.component.html',
+  styleUrl: './recipe-ingredient-list-control.component.css',
+  imports: [MatGridListModule, MatButtonModule, MatIconModule, RecipeIngredientComponent, MatDialogModule]
 })
 export class RecipeIngredientListControlComponent {
 
@@ -32,7 +32,7 @@ export class RecipeIngredientListControlComponent {
     this.emitList();
 
   }
-    
+
   openEditDialog(recipeIngredient: RecipeIngredient) {
     this.appStateService.logIfDebug('Edit dialog open with', recipeIngredient);
   
@@ -45,6 +45,7 @@ export class RecipeIngredientListControlComponent {
       this.emitList();
     });
   }
+
 
   addRecipeIngredient($rI: RecipeIngredient) {
     this.recipeIngredients.push($rI);
