@@ -13,7 +13,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NewUnitDialogComponent } from '../../units/new-unit-dialog/new-unit-dialog.component';
 import { AppStateService } from '../../app-state.service';
-import { IngredientFormComponent } from '../../ingredients/ingredient-form/ingredient-form.component';
+import { IngredientService } from '../../ingredient.service';
+import { UnitService } from '../../units/unit.service';
 
 
 @Component({
@@ -23,25 +24,26 @@ import { IngredientFormComponent } from '../../ingredients/ingredient-form/ingre
   templateUrl: './recipe-ingredient.component.html',
   styleUrl: './recipe-ingredient.component.css'
 })
-export class RecipeIngredientComponent {
+export class RecipeIngredientComponent implements OnInit {
 
 
-  @Input() ingredientsObs!: Observable<Ingredient[]>;
-  @Input() unitsObs!: Observable<Unit[]>;
+  public ingredientsObs!: Observable<Ingredient[]>;
+  public unitsObs!: Observable<Unit[]>;
   @Input() recipeIngredient: RecipeIngredient = new RecipeIngredient();
   @Output() value: EventEmitter<RecipeIngredient> = new EventEmitter();
   @ViewChild('ingredientSelect') ingredientSelect!: MatSelect;
   selectedIngredient: Ingredient | undefined;
   
 
-  constructor(public dialog: MatDialog, private appStateService: AppStateService) {
+  constructor(public dialog: MatDialog, private appStateService: AppStateService, 
+    private ingredientService: IngredientService, private unitService: UnitService) {
+      this.ingredientsObs = this.ingredientService.getAll();
+      this.unitsObs = this.unitService.getAll();
   }
 
-  // ngOnInit(): void {
-  //   if(this.data.recipeIngredient) {
-  //     this.recipeIngredient = this.data.recipeIngredient
-  //   }
-  // }
+  ngOnInit(): void {
+    this.appStateService.logIfDebug("OnInit RecipeIngredientComponent", this.recipeIngredient);
+  }
 
   openNewIngredientDialog() {
     let newIngredientDialogRef = this.dialog.open(NewIngredientDialogComponent); //we can add initial data here

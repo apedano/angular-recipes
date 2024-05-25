@@ -3,14 +3,11 @@ import { RecipeIngredient } from '../../model/recipe-ingredient.model';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable } from 'rxjs';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { IngredientService } from '../../ingredient.service';
-import { Ingredient } from '../../model/ingredient.model';
-import { Unit } from '../../model/unit.mode';
-import { UnitService } from '../../units/unit.service';
 import { RecipeIngredientComponent } from "../recipe-ingredient/recipe-ingredient.component";
+import { AppStateService } from '../../app-state.service';
+import { RecipeIngredientDialogComponent } from '../recipe-ingredient-dialog/recipe-ingredient-dialog.component';
 
 
 @Component({
@@ -25,32 +22,40 @@ export class RecipeIngredientListControlComponent {
   @Input() public recipeIngredients!: RecipeIngredient[];
   @Output() recipeIngredientsOutput: EventEmitter<RecipeIngredient[]> = new EventEmitter();
 
-  public ingredientsObs!: Observable<Ingredient[]>;
-  public unitObs!: Observable<Unit[]>;
-
-  constructor(private ingredientService: IngredientService, private unitService:UnitService, 
-      router: Router, public dialog: MatDialog) {
-    this.ingredientsObs = ingredientService.getAll();
-    this.unitObs = unitService.getAll();
+  constructor(router: Router, public dialog: MatDialog, private appStateService: AppStateService) {
+  
   }
 
   delete(rI: RecipeIngredient) {
     let itemIndex = this.recipeIngredients.indexOf(rI);
     this.recipeIngredients = this.recipeIngredients.filter((el, index) => index !== itemIndex);
+    this.emitList();
+
   }
     
   openEditDialog(recipeIngredient: RecipeIngredient) {
-    // let recipeIngredientDialogRef = this.dialog.open(RecipeIngredientComponent, {
-    //   width: '600px',
-    //   data: { 'recipeIngredient': recipeIngredient}
-    // }); //we can add initial data here
-    // recipeIngredientDialogRef.afterClosed().subscribe(result => {
-    //   // edit recipe ingredient in array
-    // });
+    this.appStateService.logIfDebug('Edit dialog open with', recipeIngredient);
+  
+    let recipeIngredientDialogRef = this.dialog.open(RecipeIngredientDialogComponent, {
+      width: '600px',
+      data: { 'recipeIngredient': recipeIngredient} //pass data to the dialog
+    });
+    recipeIngredientDialogRef.afterClosed().subscribe(result => {
+      this.appStateService.logIfDebug("Result from dialog", result);
+      this.emitList();
+    });
   }
 
   addRecipeIngredient($rI: RecipeIngredient) {
     this.recipeIngredients.push($rI);
+    this.emitList();
   }
+
+  private emitList(): void {
+    this.appStateService.logIfDebug("Emitting RecipeIngredientList", this.recipeIngredients);
+    this.recipeIngredientsOutput.emit(this.recipeIngredients);
+  }
+
+
   
 }

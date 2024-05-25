@@ -2,7 +2,7 @@
   <ng-container *ngIf="unitsObs | async as units">
     <form #recipeIngredientForm="ngForm" (ngSubmit)="onSubmit(recipeIngredientForm)">
       <mat-form-field>
-        <mat-select [(ngModel)]="recipeIngredient.ingredient" #ingredientSelect name="ingredient" required>
+        <mat-select [(ngModel)]="recipeIngredient.ingredient" name="ingredient" required>
           @for (ing of ingredients; track ing) {
           <mat-option [value]="ing">{{ing.name}}</mat-option>
           }
