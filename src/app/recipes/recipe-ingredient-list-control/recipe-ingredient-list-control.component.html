@@ -1,4 +1,8 @@
-<p>recipe-ingredient-list-control works!</p>
+@if(recipeIngredients.length > 0) {
+    <div>
+        <p>Ingredienti</p>
+    </div>
+}
 @for (recipeIngredient of recipeIngredients; track recipeIngredient) {
 <mat-grid-list cols="3" rowHeight="50px" style="border: 1px solid;">
     <mat-grid-tile [colspan]="1">
@@ -8,18 +12,20 @@
         {{recipeIngredient.amount}} {{recipeIngredient.unit?.name}}
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1">
-        <button mat-mini-fab color="accent" type="button"
+        <button mat-mini-fab color="accent" type="button" [disabled]="disabled"
             (click)="openEditDialog(recipeIngredient)"><mat-icon>edit</mat-icon></button>
-        <button mat-mini-fab color="accent" type="button"
+        <button mat-mini-fab color="accent" type="button" [disabled]="disabled"
             (click)="delete(recipeIngredient)"><mat-icon>delete</mat-icon></button>
     </mat-grid-tile>
 </mat-grid-list>
 }
-<mat-grid-list cols="1" rowHeight="80px">
-    <mat-grid-tile>Aggiungi nuovo ingrediente alla ricetta</mat-grid-tile>
-    <mat-grid-tile>
-        <app-recipe-ingredient
-            (value)="addRecipeIngredient($event)"></app-recipe-ingredient>
-    </mat-grid-tile>
-
-</mat-grid-list>
+@if(!disabled) {
+    <mat-grid-list cols="1" rowHeight="80px">
+        <mat-grid-tile>Aggiungi nuovo ingrediente alla ricetta</mat-grid-tile>
+        <mat-grid-tile>
+            <app-recipe-ingredient
+                (value)="addRecipeIngredient($event)"></app-recipe-ingredient>
+        </mat-grid-tile>
+    
+    </mat-grid-list>
+}

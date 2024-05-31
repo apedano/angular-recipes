@@ -1,12 +1,43 @@
 <ng-container *ngIf="this.appStateService.debugMode()">
-  Form<pre>{{recipeForm.errors| json}}</pre>
+  Form
+  <pre>{{recipeForm.errors| json}}</pre>
   <form-errors [form]="recipeForm"></form-errors>
-  </ng-container>
-  <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm">
-  </form>
+</ng-container>
+<div *ngIf="!loaded">Loading...</div>
+<form (ngSubmit)="onSubmit()" [formGroup]="recipeForm" *ngIf="loaded">
+  <mat-grid-list cols="10" rowHeight="5em">
+    <mat-grid-tile [colspan]="10">
+      <mat-form-field style="width: 50%;">
+        <mat-label>Nome</mat-label>
+        <input size="50" matInput placeholder="Nome della ricetta" formControlName="recipeNameControl">
+        @if (name?.touched && name?.errors?.['required']) {
+        <mat-error>Nome della ricetta obbligatorio</mat-error>
+        }
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <app-recipe-ingredient-list-control formControlName="ingredientsControl"></app-recipe-ingredient-list-control>
+  <mat-grid-list cols="10" rowHeight="5em">
+    <mat-grid-tile [colspan]="10" [rowspan]="7">
+      <mat-form-field style="width: 90%;">
+        <mat-label>Preparazione</mat-label>
+        <textarea cols="100" rows="20" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          formControlName="preparationControl" cdkAutosizeMinRows="15" cdkAutosizeMaxRows="1000">
+                  </textarea>
+        @if (preparation?.touched && preparation?.errors?.['required']) {
+        <mat-error>Preparazione obbligatorio</mat-error>
+        }
+        @if (preparation?.touched && preparation?.errors?.['minlength']) {
+        <mat-error>Preparazione deve contenere almeno 10 caratteri</mat-error>
+        }
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <button mat-raised-button color="primary" type="submit" class="btn btn-success"
+  [disabled]="!recipeForm.valid">Salva ricetta</button>
+</form>
 
-<app-recipe-ingredient-list-control [recipeIngredients]="recipe.ingredients"></app-recipe-ingredient-list-control>
+
 
 
 <!-- <app-recipe-ingredient [ingredientsObs]="ingredientsObs" [unitsObs]="unitObs"></app-recipe-ingredient> -->
-

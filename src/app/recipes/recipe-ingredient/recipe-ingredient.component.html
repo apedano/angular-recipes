@@ -12,10 +12,10 @@
         (click)="openNewIngredientDialog()"><mat-icon>add</mat-icon></button>
       <mat-form-field>
         <input type="number" matInput [(ngModel)]="recipeIngredient.amount" name="amount"
-          placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$">
+          placeholder="Inserisci un numero" pattern="^[0-9]+(\.[0-9]+)?$" required>
       </mat-form-field>
       <mat-form-field>
-        <mat-select [(ngModel)]="recipeIngredient.unit" name="unit">
+        <mat-select [(ngModel)]="recipeIngredient.unit" name="unit" required>
           @for (u of units; track u) {
           <mat-option [value]="u">{{u.name}}</mat-option>
           }

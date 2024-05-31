@@ -13,7 +13,7 @@ const routeConfig: Routes = [
         title: 'Home page',
     },
     {
-        path: 'newRecipe',
+        path: 'newRecipe/:id',
         component: RecipeFormComponent,
         title: 'New Recipe',
     },

@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { NameUniqueValidator } from '../../directives/name-unique.validator';
 import { IngredientService } from '../../ingredient.service';
 import { Observer } from 'rxjs/internal/types';
-import { flatMap, map, mergeMap, tap } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormErrorsComponent } from '../../shared/form-errors/form-errors.component';
