@@ -23,6 +23,7 @@ export class RecipeService extends GenericHttpBasedService<Recipe> implements Ge
   protected override getApiPath(): string {
     return 'recipes';
   }
+  
   protected override mapToEntity(id: string, reponseData: any): Recipe {
     console.log('Recipe responseData:', reponseData, 'id', id);
     var loadedRecipeIngredients: RecipeIngredient[] = reponseData.ingredients.map((recIngr: any, index: any) => {

@@ -45,7 +45,12 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
 
     public getById(id: string): Observable<T> {
         return this.getByFilter((t: T) => t.id === id)
-            .pipe(map(array => array[0]));
+            .pipe(map(array => {
+                if(array.length == 0) {
+                    throwError(() => new Error(`No element found with ID=${id}`))
+                }
+                return array[0]
+            }));
     }
 
     public getAll(): Observable<T[]> {
@@ -99,7 +104,7 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
 
     protected fetchAll(): Observable<T[]> {
         console.log('Refreshing onject cache');
-        return this.httpClient.get<{ [key: string]: T }>(
+        return this.httpClient.get<{ [key: string]: any }>(
             this.getApiFullUrl() + '.json').pipe(
                 map((originalResponseData: { [key: string]: any }) => {
                     // console.log('originalResponseData from fethAll call', originalResponseData);
