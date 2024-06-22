@@ -1,1 +1,25 @@
-<p>recipes works!</p>
+<p>recipes workss!</p>
+<ng-container *ngIf="recipes$ | async">
+
+</ng-container>
+<mat-grid-list cols="8" rowHeight="1em">
+    <mat-grid-tile class="title-row" [colspan]="2">
+        <div>ID</div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="6">
+        <div>Nome</div>
+    </mat-grid-tile>
+
+    @for (recipe of recipes$ | async; track recipe) {
+    <mat-grid-tile [colspan]="2">
+        <div>{{recipe.id}}</div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="6">
+        <div>
+            <a [routerLink]="['/recipe' , recipe.id]" routerLinkActive="active" ariaCurrentWhenActive="page">
+                {{recipe.name}}
+            </a>
+        </div>
+    </mat-grid-tile>
+    }
+</mat-grid-list>

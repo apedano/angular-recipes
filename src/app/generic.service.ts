@@ -45,13 +45,20 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
 
     public getById(id: string): Observable<T> {
         return this.getByFilter((t: T) => t.id === id)
-            .pipe(map(array => {
-                if(array.length == 0) {
-                    throwError(() => new Error(`No element found with ID=${id}`))
-                }
-                return array[0]
-            }));
+            .pipe(
+                map(array => {
+                    if(array.length == 0 || array == undefined) {
+                        //this returns an Observable which unsubscribes when the error is thrown
+                        // return throwError(() => new IdEntityNotFoundError(`No element found with ID=${id}`, id)); 
+                        throw new IdEntityNotFoundError(`No element found with ID=${id}`, id);
+                    }
+                    return array[0]
+                    }
+                ),
+            );
     }
+
+    
 
     public getAll(): Observable<T[]> {
         return this.getByFilter(v => true);
@@ -157,5 +164,17 @@ export abstract class GenericHttpBasedService<T extends IdEntity> {
     //         })
     //     );
     // }
+
+}
+
+export class IdEntityNotFoundError extends Error {
+    id: string;
+
+    constructor(message: string, id: string) {
+        super(message);
+        this.id = id;
+
+        Object.setPrototypeOf(this, IdEntityNotFoundError.prototype);
+    }
 
 }

@@ -4,6 +4,7 @@ import {DetailsComponent} from './details/details.component';
 import { UnitFormComponent } from './units/unit-form/unit-form.component';
 import { IngredientFormComponent } from './ingredients/ingredient-form/ingredient-form.component';
 import { RecipeFormComponent } from './recipes/recipe-form/recipe-form.component';
+import { RecipesComponent } from './recipes/recipes.component';
 
 
 const routeConfig: Routes = [
@@ -13,9 +14,19 @@ const routeConfig: Routes = [
         title: 'Home page',
     },
     {
-        path: 'newRecipe/:id',
+        path: 'recipes',
+        component: RecipesComponent,
+        title: 'Recipes',
+    },
+    {
+        path: 'recipe/:id',
         component: RecipeFormComponent,
-        title: 'New Recipe',
+        title: 'Edit recipe',
+    },
+    {
+        path: 'recipe/new',
+        component: RecipeFormComponent,
+        title: 'New recipe',
     },
     {
         path: 'newUnit',
