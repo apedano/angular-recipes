@@ -10,7 +10,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 const routeConfig: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: RecipesComponent,
         title: 'Home page',
     },
     {
